@@ -10,6 +10,8 @@ import org.jgrapht.Graphs;
 import org.jgrapht.alg.ConnectivityInspector;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
+import org.jgrapht.traverse.BreadthFirstIterator;
+import org.jgrapht.traverse.GraphIterator;
 
 import it.polito.tdp.borders.db.BordersDAO;
 
@@ -54,4 +56,18 @@ public class Model {
 		return ci.connectedSets().size();
 	}
 
+	public List<Country> getCountries() {
+		return dao.loadAllCountries(countryMap);
+	}
+	
+	public List<Country> trovaViciniJGRAPH(Country c){
+		
+		//List<Country> vicini = Graphs.neighborListOf(this.grafo, c);
+		List<Country> vicini = new ArrayList<>();
+		GraphIterator<Country, DefaultEdge> bfv = new BreadthFirstIterator<Country, DefaultEdge>(this.grafo, c);
+		while(bfv.hasNext()) {
+			vicini.add(bfv.next());
+		}
+		return vicini;
+	}
 }

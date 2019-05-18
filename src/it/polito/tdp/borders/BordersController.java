@@ -5,6 +5,7 @@
 package it.polito.tdp.borders;
 
 import java.net.URL;
+import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -15,8 +16,11 @@ import it.polito.tdp.borders.model.Country;
 import it.polito.tdp.borders.model.Model;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 
 public class BordersController {
 
@@ -33,6 +37,15 @@ public class BordersController {
 
 	@FXML // fx:id="txtResult"
 	private TextArea txtResult; // Value injected by FXMLLoader
+	
+    @FXML
+    private ComboBox<Country> cmbCountry;
+    
+    @FXML
+    private HBox HboxVicini;
+
+    @FXML
+    private Button btnCercaVicini;
 
 	@FXML
 	void doCalcolaConfini(ActionEvent event) {
@@ -44,6 +57,7 @@ public class BordersController {
 	    	}
 	    	else {
 	    		model.creaGrafo(anno);
+	    		this.HboxVicini.setDisable(false);
 	    		Map<Country, Integer> statiConfinanti = model.getConfini();
 	    		for(Country c : statiConfinanti.keySet()) {
 	    			this.txtResult.appendText(c.getStateName()+" "+statiConfinanti.get(c)+"\n");
@@ -56,15 +70,33 @@ public class BordersController {
 	    		txtResult.setText("Errore di connessione al database!");
 	    	}
 	}
+	
+	 @FXML
+	    void doCercaVicini(ActionEvent event) {
+		 	try {
+		 	Country c = this.cmbCountry.getValue();
+		 	this.txtResult.appendText(model.trovaViciniJGRAPH(c).toString());
+		 	} catch(NullPointerException e) {
+		 		this.txtResult.setText("Costruire prima il grafo");
+		 	}
+	    }
+
 
 	@FXML // This method is called by the FXMLLoader when initialization is complete
 	void initialize() {
 		assert txtAnno != null : "fx:id=\"txtAnno\" was not injected: check your FXML file 'Borders.fxml'.";
 		assert txtResult != null : "fx:id=\"txtResult\" was not injected: check your FXML file 'Borders.fxml'.";
+		assert cmbCountry != null : "fx:id=\"cmbCountry\" was not injected: check your FXML file 'Borders.fxml'.";
+	    assert btnCercaVicini != null : "fx:id=\"btnCercaVicini\" was not injected: check your FXML file 'Borders.fxml'.";
 	}
 
 	public void setModel(Model model) {
 		this.model=model;
-		
+		this.setCombBox();
+	}
+	
+	public void setCombBox() {
+		List<Country> countries = model.getCountries();
+		this.cmbCountry.getItems().addAll(countries);
 	}
 }
