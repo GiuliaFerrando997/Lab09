@@ -6,6 +6,9 @@ package it.polito.tdp.borders;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.Set;
+
+import org.jgrapht.graph.DefaultEdge;
 
 import it.polito.tdp.borders.model.Model;
 import javafx.event.ActionEvent;
@@ -15,7 +18,7 @@ import javafx.scene.control.TextField;
 
 public class BordersController {
 
-	Model model;
+	private Model model;
 
 	@FXML // ResourceBundle that was given to the FXMLLoader
 	private ResourceBundle resources;
@@ -31,13 +34,30 @@ public class BordersController {
 
 	@FXML
 	void doCalcolaConfini(ActionEvent event) {
-
-		txtResult.setText("Todo!");
+		this.txtResult.clear();
+		try {
+			int anno = Integer.parseInt(this.txtAnno.getText());
+	    	if(anno<1816 || anno>2016) {
+	    		this.txtResult.setText("Inserire una data nel periodo corretto!");
+	    	}
+	    	else {
+	    		
+	    	}
+    		} catch(NumberFormatException c) {
+	    		txtResult.setText("Inserire una numero di lettere valido");
+	    	} catch(RuntimeException e ) {
+	    		txtResult.setText("Errore di connessione al database!");
+	    	}
 	}
 
 	@FXML // This method is called by the FXMLLoader when initialization is complete
 	void initialize() {
 		assert txtAnno != null : "fx:id=\"txtAnno\" was not injected: check your FXML file 'Borders.fxml'.";
 		assert txtResult != null : "fx:id=\"txtResult\" was not injected: check your FXML file 'Borders.fxml'.";
+	}
+
+	public void setModel(Model model) {
+		this.model=model;
+		
 	}
 }
