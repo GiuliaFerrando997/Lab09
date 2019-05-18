@@ -5,11 +5,13 @@
 package it.polito.tdp.borders;
 
 import java.net.URL;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
 
 import org.jgrapht.graph.DefaultEdge;
 
+import it.polito.tdp.borders.model.Country;
 import it.polito.tdp.borders.model.Model;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -41,7 +43,12 @@ public class BordersController {
 	    		this.txtResult.setText("Inserire una data nel periodo corretto!");
 	    	}
 	    	else {
-	    		
+	    		model.creaGrafo(anno);
+	    		Map<Country, Integer> statiConfinanti = model.getConfini();
+	    		for(Country c : statiConfinanti.keySet()) {
+	    			this.txtResult.appendText(c.getStateName()+" "+statiConfinanti.get(c)+"\n");
+	    		}
+	    		this.txtResult.appendText("Numero di componenti connesse: "+model.componentiConnesse());
 	    	}
     		} catch(NumberFormatException c) {
 	    		txtResult.setText("Inserire una numero di lettere valido");

@@ -1,5 +1,7 @@
 package it.polito.tdp.borders.model;
 
+import java.util.Map;
+
 public class TestModel {
 
 	public static void main(String[] args) {
@@ -8,18 +10,22 @@ public class TestModel {
 
 		System.out.println("TestModel -- TODO");
 		
-//		System.out.println("Creo il grafo relativo al 2000");
-//		model.createGraph(2000);
+		System.out.println("Creo il grafo relativo al 2002");
+		model.creaGrafo(2002);
 		
-//		List<Country> countries = model.getCountries();
-//		System.out.format("Trovate %d nazioni\n", countries.size());
+		Map<Country, Integer> statiConfinanti = model.getConfini();
+		for(Country c : statiConfinanti.keySet()) {
+			System.out.println(c.getStateName()+" "+statiConfinanti.get(c));
+		}
 
-//		System.out.format("Numero componenti connesse: %d\n", model.getNumberOfConnectedComponents());
+		System.out.format("Numero componenti connesse: %d\n", model.componentiConnesse());
 		
 //		Map<Country, Integer> stats = model.getCountryCounts();
 //		for (Country country : stats.keySet())
 //			System.out.format("%s %d\n", country, stats.get(country));		
 		
 	}
+	
+	// 713463
 
 }
